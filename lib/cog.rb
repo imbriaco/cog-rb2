@@ -3,15 +3,17 @@ require "json"
 
 require "active_support/core_ext/string/inflections"
 
-require_relative "cog/command"
+require_relative "cog/logger"
 require_relative "cog/dsl"
-require_relative "cog/request"
-require_relative "cog/response"
 require_relative "cog/router"
 
-module Cog
-  VERSION = "0.5.0"
+require_relative "cog/command"
+require_relative "cog/request"
+require_relative "cog/response"
+require_relative "cog/version"
 
+module Cog
+  @debug = false
   @base = nil
   @routes = {}
 
@@ -33,5 +35,9 @@ module Cog
 
   def self.base
     @base
+  end
+
+  def self.log(level = :info, message)
+    puts "COGCMD_#{level.to_s.upcase}: #{message}"
   end
 end

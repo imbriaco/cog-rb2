@@ -1,20 +1,20 @@
 module Cog
   class Command
-    attr_accessor :request
+    include Cog::Logger
+
+    attr_accessor :request, :response
 
     def initialize(request)
-      puts "Initializing #{self.inspect} with #{request.inspect}."
+      debug("Initializing #{self.inspect} with #{request.inspect}.")
+      @request = request
     end
 
-    def run_command
-      render("foo")
+    def render(template: nil, body: nil)
+      @response = Cog::Response.new(template: template, body: body)
     end
 
-    def render(content = {})
-      content = { body: content } if content.is_a? String
-      response = Cog::Response.new(content)
-      puts "Sending Response: #{response.inspect}"
-      response
+    def log(level = :info, message)
+      Cog.log(level, message)
     end
   end
 end
